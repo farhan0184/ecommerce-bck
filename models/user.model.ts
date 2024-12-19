@@ -1,11 +1,11 @@
 import { Model, model, Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { ObjectId } from "bson";
 import config from "../config";
+import { IUser, UserMethods } from "../types/user.types";
 
 
-const schema = new Schema({
+const schema = new Schema<IUser>({
     name: {
         type: String,
     },
@@ -36,7 +36,9 @@ const schema = new Schema({
         type: String,
         enum: ['male', 'female'],
     },
-    
+    location: {
+        type: String,
+    }
    
 }, { timestamps: true })
 
@@ -57,26 +59,12 @@ schema.methods.generateJwt = function () {
     return jwt.sign({
         _id: this._id,
         role: this.role,
-    }, config.jwt.secret, { expiresIn: '1d' });
+    }, config.jwt.secret, { expiresIn: '15d' });
 }
 
-interface User {
-    _id: ObjectId;
-    name: string;
-    email: string;
-    dob: string;
-    role: string;
-    gender: string,
-}
 
-interface UserMethods {
-    comparePassword(password: string): Promise<boolean>;
 
-    generateJwt(): string;
-}
-
-// @ts-ignore
-type UserModel = Model<User, {}, UserMethods>
+type UserModel = Model<IUser, {}, UserMethods>
 
 const User = model<UserModel>('user', schema);
 export default User;

@@ -4,6 +4,7 @@ import helmet from "helmet";
 import config from "./config";
 import cors from 'cors'
 import { decodeToken } from "./middlewares/auth.middleware";
+import apiRoutes from "./routes/api";
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use(function (req, res, next){
 
 app.use(cors())
 
-
+app.use('/api', apiRoutes)
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 200,
