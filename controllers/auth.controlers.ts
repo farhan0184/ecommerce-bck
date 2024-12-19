@@ -181,3 +181,17 @@ export const resetPassword = async (req: Request, res: Response) => {
         sendError(res,  error.errors ? error.errors[0].message : "Invalid request");
     }
 };
+
+
+
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+        // Fetch all users from the database, excluding the password field
+        const users = await User.find({}, { password: 0 }).lean(); // Use `lean()` for plain JS objects
+
+        sendSuccess(res, "Users fetched successfully", users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        sendError(res, "Failed to fetch users", 500);
+    }
+};
