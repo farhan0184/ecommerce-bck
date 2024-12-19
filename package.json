@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-bck",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server.ts",
     "build": "tsc",
